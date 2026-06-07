@@ -6,18 +6,32 @@
     <title>Jose Joy — Senior Software Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #fafafa;
-            --surface: #ffffff;
-            --text-primary: #111827;
-            --text-secondary: #4b5563;
-            --text-muted: #9ca3af;
-            --border: #e5e7eb;
-            --accent: #2563eb;
-            --accent-dim: #f0f4ff;
-            --max-width: 1040px;
+            --bg-main: #060813;
+            --surface: #0b0f19;
+            --surface-card: #111726;
+            --surface-card-hover: #161f33;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #475569;
+            --border: #1e293b;
+            --border-hover: #334155;
+            
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.25);
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            
+            --pub-accent: #10b981;
+            --pub-glow: rgba(16, 185, 129, 0.15);
+            --pub-gradient: linear-gradient(135deg, #10b981 0%, #047857 100%);
+            
+            --max-width: 1140px;
+            --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -27,304 +41,693 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: var(--font-sans);
             background-color: var(--bg-main);
             color: var(--text-secondary);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Abstract Dynamic Grid Background Component */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .bg-gradient-glow {
+            position: fixed;
+            top: -10%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.07) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+            animation: slowOrbit 25s infinite linear;
+        }
+
+        @keyframes slowOrbit {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-5%, 5%) scale(1.1); }
+            100% { transform: translate(0, 0) scale(1); }
         }
 
         .wrapper {
             max-width: var(--max-width);
             margin: 0 auto;
-            padding: 4rem 2rem;
+            padding: 5rem 2rem;
+            animation: fadeInPage 0.8s var(--ease-out-expo) forwards;
         }
 
-        /* Masthead */
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modern Glassmorphism Master Header */
         header {
+            background: rgba(11, 15, 25, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem;
             margin-bottom: 4rem;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             flex-wrap: wrap;
             gap: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: scanline 4s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .meta h1 {
-            font-size: 2.25rem;
+            font-size: 3rem;
             font-weight: 700;
             color: var(--text-primary);
-            letter-spacing: -0.03em;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
         }
 
-        .meta .title-sub {
-            font-size: 1.15rem;
-            color: var(--text-primary);
+        .meta .badge-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .title-badge {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #60a5fa;
+            font-size: 0.85rem;
+            font-family: var(--font-mono);
             font-weight: 500;
-            margin-top: 0.25rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 6px;
+            letter-spacing: -0.01em;
         }
 
-        .meta .location-link {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-top: 0.5rem;
+        .location-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
 
         .contact-channels {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 0.5rem;
-            text-align: right;
+            gap: 1rem;
         }
 
-        .contact-channels a {
-            color: var(--text-secondary);
+        .btn-interactive {
+            background: var(--text-primary);
+            color: var(--bg-main);
             text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.15s;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            transition: all 0.3s var(--ease-out-expo);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .contact-channels a:hover {
-            color: var(--accent);
+        .btn-interactive::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-gradient);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s var(--ease-out-expo);
+        }
+
+        .btn-interactive:hover {
+            color: var(--text-primary);
+            box-shadow: 0 0 25px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-interactive:hover::before {
+            opacity: 1;
         }
 
         .social-row {
             display: flex;
-            gap: 1rem;
-            margin-top: 0.5rem;
+            gap: 1.5rem;
         }
 
-        /* System Grid Layout */
+        .social-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s ease, transform 0.2s ease;
+            position: relative;
+        }
+
+        .social-link::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--text-primary);
+            transition: width 0.2s ease;
+        }
+
+        .social-link:hover {
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        .social-link:hover::after {
+            width: 100%;
+        }
+
+        /* 2-Column Responsive Layout Dynamic Space Grid */
         .grid-layout {
             display: grid;
             grid-template-columns: 1fr;
             gap: 4rem;
         }
 
-        @media (min-width: 890px) {
+        @media (min-width: 960px) {
             .grid-layout {
-                grid-template-columns: 2fr 1fr;
+                grid-template-columns: 1fr 340px;
             }
         }
 
-        /* Core Typography & Sections */
         section {
-            margin-bottom: 3.5rem;
+            margin-bottom: 4rem;
         }
 
         section h2 {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-primary);
-            margin-bottom: 1.75rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 0.5rem;
+            letter-spacing: 0.15em;
+            color: #64748b;
+            margin-bottom: 2.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        section h2::after {
+            content: "";
+            flex-grow: 1;
+            height: 1px;
+            background: var(--border);
         }
 
         .about-block p {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: var(--text-secondary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: justify;
         }
 
-        /* Experience Timeline Elements */
-        .exp-node {
-            margin-bottom: 2.5rem;
+        /* Interactive Timeline Architecture */
+        .timeline {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            bottom: 0.5rem;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .exp-card {
+            position: relative;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        .exp-card::before {
+            content: "";
+            position: absolute;
+            left: calc(-1.5rem - 6px);
+            top: 2.5rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            border: 2px solid var(--bg-main);
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        .exp-card:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            background: var(--surface-card);
+            transform: translateX(6px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .exp-card:hover::before {
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--accent);
+            transform: scale(1.2);
         }
 
         .exp-header {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: flex-start;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .exp-role {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .exp-role a {
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-
-        .exp-role a:hover {
-            color: var(--accent);
-        }
-
-        .exp-time {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .exp-body p {
-            font-size: 0.95rem;
-            margin-bottom: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        /* Projects Presentation Block */
-        .project-node {
-            margin-bottom: 2rem;
-        }
-
-        .project-node h3 {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .project-node h3 a {
-            color: var(--text-primary);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .project-node h3 a:hover {
-            color: var(--accent);
-        }
-
-        .project-node p {
-            font-size: 0.95rem;
-            margin-top: 0.4rem;
-            color: var(--text-secondary);
-        }
-
-        /* Custom Structured Lists */
-        .bullet-list {
-            list-style: none;
-        }
-
-        .bullet-list li {
-            position: relative;
-            padding-left: 1.25rem;
-            margin-bottom: 0.75rem;
-            font-size: 0.95rem;
-        }
-
-        .bullet-list li::before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: var(--text-muted);
-        }
-
-        .publication-node {
+            gap: 0.75rem;
             margin-bottom: 1rem;
         }
 
-        .publication-node a {
+        .exp-role {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .exp-role a {
+            color: var(--accent);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .exp-time {
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            color: #60a5fa;
+            background: rgba(59, 130, 246, 0.08);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+        }
+
+        .exp-body p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-align: justify;
+        }
+
+        /* Bento Box Grid Component Deployment */
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .project-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        .project-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: var(--surface-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .project-card:hover::after {
+            opacity: 1;
+        }
+
+        .project-card h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-card h3 a {
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .project-card h3 a::after {
+            content: "→";
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        .project-card:hover h3 a::after {
+            color: var(--accent);
+            transform: translateX(4px);
+        }
+
+        .project-card p {
             font-size: 0.95rem;
             color: var(--text-secondary);
+            text-align: justify;
+        }
+
+        /* High Quality Analytical Publications Panel */
+        .publications-panel {
+            background: rgba(16, 185, 129, 0.01);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--pub-accent);
+            border-radius: 14px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .publications-panel:hover {
+            background: rgba(16, 185, 129, 0.02);
+            box-shadow: 0 15px 35px var(--pub-glow);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .pub-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .pub-node {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .pub-node::before {
+            content: "</>";
+            position: absolute;
+            left: 0;
+            color: rgba(16, 185, 129, 0.6);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            top: 4px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .pub-node:hover::before {
+            color: var(--pub-accent);
+        }
+
+        .pub-node a {
+            font-size: 1.05rem;
+            color: var(--text-primary);
             text-decoration: none;
             font-weight: 500;
+            display: inline-block;
+            line-height: 1.5;
+            transition: color 0.2s ease;
         }
 
-        .publication-node a:hover {
-            color: var(--accent);
+        .pub-node a:hover {
+            color: var(--pub-accent);
         }
 
-        /* Sidebar Architecture Components */
+        /* Control Architecture Sidebar Components */
         .right-rail {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 2.5rem;
         }
 
-        .skills-category {
+        .sidebar-widget {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .sidebar-widget:hover {
+            border-color: var(--border-hover);
+        }
+
+        .sidebar-widget h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.12em;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-widget h3::after {
+            content: "";
+            flex-grow: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .skills-group {
             margin-bottom: 1.5rem;
         }
 
-        .skills-category h4 {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
+        .skills-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .skills-group h4 {
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            text-transform: lowercase;
         }
 
         .tag-cloud {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.4rem;
+            gap: 0.5rem;
         }
 
         .tag-pill {
-            background-color: var(--surface);
+            background: var(--surface-card);
             border: 1px solid var(--border);
-            color: var(--text-primary);
+            color: var(--text-secondary);
             font-size: 0.8rem;
             font-weight: 500;
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
+            padding: 0.3rem 0.75rem;
+            border-radius: 8px;
+            transition: all 0.2s var(--ease-out-expo);
         }
 
-        .edu-card {
-            margin-bottom: 1.5rem;
+        .tag-pill:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
+            background: rgba(59, 130, 246, 0.1);
+            transform: scale(1.05);
         }
 
-        .edu-card h3 {
-            font-size: 0.95rem;
+        /* Academy Presentation Logic */
+        .edu-item {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .edu-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .edu-item h4 {
+            font-size: 1rem;
             font-weight: 600;
             color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
-        .edu-card p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .edu-card .score {
+        .edu-item p {
             font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .edu-item .gpa-badge {
+            display: inline-block;
+            margin-top: 0.6rem;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
             font-weight: 600;
+            color: #60a5fa;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .distinction-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .distinction-list li {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .distinction-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
             color: var(--accent);
-            margin-top: 0.15rem;
+            font-weight: bold;
+            font-size: 0.85rem;
         }
 
         footer {
-            margin-top: 6rem;
+            margin-top: 8rem;
             border-top: 1px solid var(--border);
-            padding-top: 2rem;
+            padding-top: 3rem;
+            text-align: center;
+        }
+
+        footer p {
             font-size: 0.8rem;
+            font-family: var(--font-mono);
             color: var(--text-muted);
+            letter-spacing: -0.01em;
         }
     </style>
 </head>
 <body>
 
+    <!-- Ambient Animation Layer Nodes -->
+    <div class="bg-grid"></div>
+    <div class="bg-gradient-glow"></div>
+
     <div class="wrapper">
+        <!-- Interactive Systems Header Console -->
         <header>
             <div class="meta">
                 <h1>Jose Joy</h1>
-                <div class="title-sub">Senior Software Engineer, Google</div>
-                <div class="location-link">Sunnyvale, CA, US</div>
+                <div class="badge-container">
+                    <div class="title-badge">Senior Software Engineer, Google</div>
+                    <div class="location-text">
+                        <span class="pulse-dot"></span> Sunnyvale, CA
+                    </div>
+                </div>
             </div>
             <div class="contact-channels">
-                <a href="mailto:josejoy94@gmail.com">josejoy94@gmail.com</a>
+                <a href="mailto:josejoy94@gmail.com" class="btn-interactive">Contact Me</a>
                 <div class="social-row">
-                    <a href="https://www.linkedin.com/in/josejoy94/" target="_blank">LinkedIn</a>
-                    <a href="https://github.com/JoseJoy249" target="_blank">GitHub</a>
-                    <a href="https://www.facebook.com/josejoy94" target="_blank">Facebook</a>
+                    <a href="https://www.linkedin.com/in/josejoy94/" target="_blank" class="social-link">LinkedIn</a>
+                    <a href="https://github.com/JoseJoy249" target="_blank" class="social-link">GitHub</a>
+                    <a href="https://www.facebook.com/josejoy94" target="_blank" class="social-link">Facebook</a>
                 </div>
             </div>
         </header>
 
         <div class="grid-layout">
-            <!-- Left Narrative Column -->
+            <!-- Left Narrative Engine Column -->
             <main class="left-rail">
                 <section>
-                    <h2>Profile</h2>
+                    <h2>Profile Summary</h2>
                     <div class="about-block">
                         <p>Currently working as an individual contributor in the internal filtering platform team in Google. Holds an M.S. Degree from UC San Diego specializing in Machine Learning and Data Science.</p>
                         <p>My professional interests include software development, distributed systems and machine learning.</p>
@@ -332,127 +735,145 @@
                 </section>
 
                 <section>
-                    <h2>Experience</h2>
+                    <h2>Professional Track</h2>
+                    <div class="timeline">
 
-                    <div class="exp-node">
-                        <div class="exp-header">
-                            <div class="exp-role">Senior Software Engineer — <a href="https://deepmind.google/technologies/gemini/" target="_blank">Google</a></div>
-                            <div class="exp-time">May 2025 — Present</div>
+                        <div class="exp-card">
+                            <div class="exp-header">
+                                <div class="exp-role">Senior Software Engineer — Google</div>
+                                <div class="exp-time">2025 — Present</div>
+                            </div>
+                            <div class="exp-body">
+                                <p>Architect and scale the core Filtering Platform to enable internal clients, such as Gemini, to enforce legal and regulatory compliance.</p>
+                                <p>Collaborate cross-functionally with engineering, research, and legal stakeholders to design and deploy robust, low-latency data policy guardrails.</p>
+                            </div>
                         </div>
-                        <div class="exp-body">
-                            <p>Architecting and scaling core Filtering Platform systems to allow enterprise entities, including Gemini model instances, to operate under strict compliance, safety, and operational legal guarantees. Driving high-throughput processing parameters while safeguarding mission-critical latency windows.</p>
-                        </div>
-                    </div>
 
-                    <div class="exp-node">
-                        <div class="exp-header">
-                            <div class="exp-role">Software Engineer — Google</div>
-                            <div class="exp-time">October 2021 — May 2025</div>
+                        <div class="exp-card">
+                            <div class="exp-header">
+                                <div class="exp-role">Software Engineer — Google</div>
+                                <div class="exp-time">2021 — 2025</div>
+                            </div>
+                            <div class="exp-body">
+                                <p>Engineered distributed indexing pipelines processing petabytes of web data, improving the system to purge low-value and duplicate pages to measurably elevate search result quality. </p>
+                                <p>Optimized data pipelines to accelerate search ranking signal refresh cycles from weeks to days, drastically improving data freshness.</p>
+                            </div>
                         </div>
-                        <div class="exp-body">
-                            <p>Engineered core distributed map indexing layers across petabyte-scale repositories to cleanly remove systemic duplication and elevate underlying index authenticity pools. Redesigned ingestion parameters to tighten signal refresh processing overheads down from multi-week horizons into clean single-day increments.</p>
-                        </div>
-                    </div>
 
-                    <div class="exp-node">
-                        <div class="exp-header">
-                            <div class="exp-role">Software Development Engineer II — <a href="https://aws.amazon.com/sagemaker/" target="_blank">Amazon SageMaker</a></div>
-                            <div class="exp-time">June 2019 — October 2021</div>
+                        <div class="exp-card">
+                            <div class="exp-header">
+                                <div class="exp-role">Software Development Engineer II — <a href="https://aws.amazon.com/sagemaker/" target="_blank">Amazon SageMaker</a></div>
+                                <div class="exp-time">2019 — 2021</div>
+                            </div>
+                            <div class="exp-body">
+                                <p>Built SageMaker Processing APIs and orchestration layers for distributed ML tasks.</p>
+                                <p>Engineered API integrations connecting SageMaker processing services with AWS Athena, AWS Redshift, and Snowflake</p>
+                                <p>Developed SageMaker backend services for large-scale training and high-throughput inference.</p>
+                            </div>
                         </div>
-                        <div class="exp-body">
-                            <p>Owned architectural components of the core public-facing SageMaker Processing infrastructure orchestration frameworks. Built optimized storage integrations linking backends directly with Snowflake, Athena, and Redshift clusters to streamline massive data preparation runs.</p>
-                        </div>
-                    </div>
 
-                    <div class="exp-node">
-                        <div class="exp-header">
-                            <div class="exp-role">Graduate Teaching Assistant — UC San Diego</div>
-                            <div class="exp-time">September 2018 — March 2019</div>
+                        <div class="exp-card">
+                            <div class="exp-header">
+                                <div class="exp-role">Graduate Teaching Assistant — UC San Diego</div>
+                                <div class="exp-time">2018 — 2019</div>
+                            </div>
+                            <div class="exp-body">
+                                <p>Delivered instruction, managed code evaluations, and designed exercise sessions covering Statistical Learning math paradigms (ECE-271 A) and Pattern Recognition algorithm implementations (ECE-175 A).</p>
+                            </div>
                         </div>
-                        <div class="exp-body">
-                            <p>Managed functional student evaluations and guided laboratory courses covering both Statistical Learning frameworks (ECE-271 A) and Pattern Recognition standards (ECE-175 A).</p>
-                        </div>
-                    </div>
 
-                    <div class="exp-node">
-                        <div class="exp-header">
-                            <div class="exp-role">Graduate Researcher — Statistical Visual Computing Lab</div>
-                            <div class="exp-time">February 2018 — August 2018</div>
+                        <div class="exp-card">
+                            <div class="exp-header">
+                                <div class="exp-role">Graduate Researcher — Statistical Visual Computing Lab</div>
+                                <div class="exp-time">2018</div>
+                            </div>
+                            <div class="exp-body">
+                                <p>Built spatial scale inference modules connecting a Mask R-CNN foundation directly into a parallel Siamese deep learning layout to deduce target structural variables. Managed crowdsourced parsing arrays using Mechanical Turk infrastructure to acquire bespoke validation datasets.</p>
+                            </div>
                         </div>
-                        <div class="exp-body">
-                            <p>Developed spatial inference models leveraging a Mask R-CNN foundation connected to dual Siamese network layers to cleanly resolve relative sizing attributes on baseline RGB arrays. Engineered crowdsourced scraping workflows using Mechanical Turk platforms to compile dedicated datasets from scratch.</p>
-                        </div>
-                    </div>
 
-                    <div class="exp-node">
-                        <div class="exp-header">
-                            <div class="exp-role">Research Intern — HTIC, IIT Madras</div>
-                            <div class="exp-time">September 2016 — March 2017</div>
+                        <div class="exp-card">
+                            <div class="exp-header">
+                                <div class="exp-role">Research Intern — HTIC, IIT Madras</div>
+                                <div class="exp-time">2016 — 2017</div>
+                            </div>
+                            <div class="exp-body">
+                                <p>Constructed data evaluation engines tracking 9-axis spatial IMU systems to map biomechanical stroke profile movements. Built isolated micro-state analysis layers identifying real-time physical stress markers via multi-channel EDA and HRV signals.</p>
+                            </div>
                         </div>
-                        <div class="exp-body">
-                            <p>Designed data classification pipelines analyzing complex 9-axis spatial IMU inputs for structural biomechanical stroke profiling. Constructed isolated stress tracking layers parsing multi-modal EDA and HRV data indicators for physiological state assessment.</p>
-                        </div>
-                    </div>
 
-                    <div class="exp-node">
-                        <div class="exp-header">
-                            <div class="exp-role">Research Intern — Intel Labs</div>
-                            <div class="exp-time">January 2016 — June 2016</div>
-                        </div>
-                        <div class="exp-body">
-                            <p>Evaluated sparse field reconstruction engines leveraging Compressive Sensing math paradigms to scale down edge node data gathering profiles across distributed sensor grids. Generated structural performance enhancements regarding long-horizon network longevity metrics.</p>
-                        </div>
                     </div>
                 </section>
 
                 <section>
-                    <h2>Core Projects</h2>
-                    
-                    <div class="project-node">
-                        <h3><a href="https://github.com/JoseJoy249/Image_captioning_and_retrieval" target="_blank">Image Captioning & Retrieval Engine</a></h3>
-                        <p>Constructed a dual-stage processing architecture using a ResNet-152 image encoder combined with sequential LSTM layers to evaluate cross-contextual image translations and reverse recommendation tracking.</p>
-                    </div>
+                    <h2>Production Projects Mesh</h2>
+                    <div class="project-grid">
+                        
+                        <div class="project-card">
+                            <div>
+                                <h3><a href="https://github.com/JoseJoy249/Image_captioning_and_retrieval" target="_blank">Captioning & Retrieval</a></h3>
+                                <p>Coupled ResNet-152 visual layers with recurrent LSTM cells to execute complex sequential context parsing and automated contextual item matching.</p>
+                            </div>
+                        </div>
 
-                    <div class="project-node">
-                        <h3><a href="https://github.com/JoseJoy249/Handwritten-Expression-Evaluation" target="_blank">Handwritten Mathematical Expression Parser</a></h3>
-                        <p>Evaluated structural formulation strings via localized CNN topologies and Random Forest ensemble variations to isolate and process handwritten complex mathematical vectors.</p>
-                    </div>
+                        <div class="project-card">
+                            <div>
+                                <h3><a href="https://github.com/JoseJoy249/Handwritten-Expression-Evaluation" target="_blank">Mathematical Parser</a></h3>
+                                <p>Constructed structural character localization networks paired with Random Forest classifiers to segment and parse handwritten equations.</p>
+                            </div>
+                        </div>
 
-                    <div class="project-node">
-                        <h3><a href="https://github.com/JoseJoy249/IMDB-dataset-analysis" target="_blank">IMDB Analytics & Recommendation Platform</a></h3>
-                        <p>Parsed over 4 million text entity configurations to render demographic trend metrics, timeline distribution indices, and collaborative item-filtering recommender layers.</p>
-                    </div>
+                        <div class="project-card">
+                            <div>
+                                <h3><a href="https://github.com/JoseJoy249/IMDB-dataset-analysis" target="_blank">IMDB Metrics Engine</a></h3>
+                                <p>Evaluated extensive graph data configurations to compute demographic analytics and build fast collaborative item-filtering recommender clusters.</p>
+                            </div>
+                        </div>
 
-                    <div class="project-node">
-                        <h3><a href="https://github.com/JoseJoy249/Fake_news_classification" target="_blank">Contextual News Classifier</a></h3>
-                        <p>Employed TF-IDF feature mapping matrices, Latent Dirichlet Allocation models, and Matrix Factorization layers to map distribution variances inside structured text sets.</p>
-                    </div>
+                        <div class="project-card">
+                            <div>
+                                <h3><a href="https://github.com/JoseJoy249/Fake_news_classification" target="_blank">Contextual Classifier</a></h3>
+                                <p>Implemented TF-IDF transformation matrices alongside Latent Dirichlet Allocation models to track text anomaly vectors.</p>
+                            </div>
+                        </div>
 
-                    <div class="project-node">
-                        <h3><a href="https://github.com/JoseJoy249/Business_recommender_system" target="_blank">Spatial Business Collaborative Engine</a></h3>
-                        <p>Built matrix factorization and latent factor modeling layers mapping over 200,000 independent reviews to accurately resolve missing user-to-merchant preference configurations.</p>
+                        <div class="project-card">
+                            <div>
+                                <h3><a href="https://github.com/JoseJoy249/Business_recommender_system" target="_blank">Matrix Recommendation</a></h3>
+                                <p>Applied matrix factorization and hidden factor models to predict user preference profiles within dense commercial networks.</p>
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div>
+                                <h3><a href="https://github.com/JoseJoy249/Portfolio_algorithms" target="_blank">Universal Portfolio Engine</a></h3>
+                                <p>Coded recursive multi-asset portfolio balancing loops derived from Cover's Universal Portfolio formulations to evaluate historical data.</p>
+                            </div>
+                        </div>
+
                     </div>
                 </section>
 
                 <section>
                     <h2>Academic Research & Publications</h2>
-                    <div class="publications-container">
-                        <ul class="bullet-list">
-                            <li class="publication-node"><a href="https://patents.google.com/patent/US20180213348A1/en" target="_blank">Compressive sensing for power efficient data aggregation in a wireless sensor network (US Patent)</a></li>
-                            <li class="publication-node"><a href="http://iopscience.iop.org/article/10.1088/2057-1976/aadbd4" target="_blank">Physiological Signal Based Work Stress Detection Using Unobtrusive Sensors</a></li>
-                            <li class="publication-node"><a href="http://ieeexplore.ieee.org/document/8037868/" target="_blank">Differential effects of physical and psychological stressors on electrodermal activity</a></li>
-                            <li class="publication-node"><a href="http://ieeexplore.ieee.org/abstract/document/7570624/" target="_blank">Design of a 1V subthreshold comparator for bio-medical over sampled ADCs</a></li>
+                    <div class="publications-panel">
+                        <ul class="pub-list">
+                            <li class="pub-node"><a href="https://patents.google.com/patent/US20180213348A1/en" target="_blank">Compressive sensing for power efficient data aggregation in a wireless sensor network (US Patent)</a></li>
+                            <li class="pub-node"><a href="http://iopscience.iop.org/article/10.1088/2057-1976/aadbd4" target="_blank">Physiological Signal Based Work Stress Detection Using Unobtrusive Sensors</a></li>
+                            <li class="pub-node"><a href="http://ieeexplore.ieee.org/document/8037868/" target="_blank">Differential effects of physical and psychological stressors on electrodermal activity</a></li>
+                            <li class="pub-node"><a href="http://ieeexplore.ieee.org/abstract/document/7570624/" target="_blank">Design of a 1V subthreshold comparator for bio-medical over sampled ADCs</a></li>
                         </ul>
                     </div>
                 </section>
             </main>
 
-            <!-- Right Sidebar Column -->
+            <!-- Right Sidebar Panel Widgets -->
             <aside class="right-rail">
-                <section>
-                    <h2>Technical Stack</h2>
-                    <div class="skills-category">
-                        <h4>Languages</h4>
+                
+                <div class="sidebar-widget">
+                    <h3>Technical Inventory</h3>
+                    <div class="skills-group">
+                        <h4>Core Languages</h4>
                         <div class="tag-cloud">
                             <span class="tag-pill">C++</span>
                             <span class="tag-pill">Python</span>
@@ -461,8 +882,8 @@
                             <span class="tag-pill">SQL</span>
                         </div>
                     </div>
-                    <div class="skills-category">
-                        <h4>Systems & Infrastructures</h4>
+                    <div class="skills-group">
+                        <h4>Systems & Platform</h4>
                         <div class="tag-cloud">
                             <span class="tag-pill">AWS Core</span>
                             <span class="tag-pill">SageMaker</span>
@@ -470,38 +891,39 @@
                             <span class="tag-pill">DynamoDB</span>
                             <span class="tag-pill">Apache Spark</span>
                             <span class="tag-pill">Snowflake</span>
-                            <span class="tag-pill">Linux Systems</span>
+                            <span class="tag-pill">Linux Engine</span>
                         </div>
                     </div>
-                </section>
+                </div>
 
-                <section>
-                    <h2>Education</h2>
-                    <div class="edu-card">
-                        <h3>M.S. Electrical & Computer Engineering</h3>
+                <div class="sidebar-widget">
+                    <h3>Academic Core</h3>
+                    <div class="edu-item">
+                        <h4>M.S. Electrical & Computer Engineering</h4>
                         <p>University of California, San Diego</p>
-                        <div class="score">GPA: 3.9 / 4.0</div>
+                        <div class="gpa-badge">GPA 3.9 / 4.0</div>
                     </div>
-                    <div class="edu-card">
-                        <h3>B.E. (Hons.) Electronics & Instrumentation</h3>
+                    <div class="edu-item">
+                        <h4>B.E. (Hons.) Electronics & Instrumentation</h4>
                         <p>BITS Pilani</p>
-                        <div class="score"">GPA: 8.7 / 10.0</div>
+                        <div class="gpa-badge">GPA 8.7 / 10.0</div>
                     </div>
-                </section>
+                </div>
 
-                <section>
-                    <h2>Distinctions</h2>
-                    <ul class="bullet-list" style="font-size: 0.9rem;">
+                <div class="sidebar-widget">
+                    <h3>Distinctions</h3>
+                    <ul class="distinction-list">
                         <li>Perfect score in GRE Quant (170/170)</li>
                         <li>Top 1% National Graduate Aptitude Test (GATE)</li>
-                        <li>Top 1% IIT Admissions & AIEEE Examinations</li>
+                        <li>Top 1% IIT Admissions & AIEEE Metrics</li>
                     </ul>
-                </section>
+                </div>
+
             </aside>
         </div>
 
         <footer>
-            <p>Jose Joy &mdash; Portfolio Index. Clean system architecture footprint.</p>
+            <p>sys.status // verified // jose_joy_portfolio_2026</p>
         </footer>
     </div>
 
